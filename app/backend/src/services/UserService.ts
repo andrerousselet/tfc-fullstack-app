@@ -12,8 +12,11 @@ export default class UserService {
   async login(user: ILogin) {
     UserService.validateLogin(user);
     const foundUser = await this.userModel.findUser(user.email);
-    const validPass = compareSync(user.password, foundUser?.password as string);
-    if (!foundUser || !validPass) {
+    if (!foundUser) {
+      throw new CustomError(StatusCodes.UNAUTHORIZED, 'Incorrect email or password');
+    }
+    const validPass = compareSync(user.password, foundUser.password);
+    if (!validPass) {
       throw new CustomError(StatusCodes.UNAUTHORIZED, 'Incorrect email or password');
     }
     const token = UserService.generateToken(foundUser);
@@ -26,12 +29,7 @@ export default class UserService {
       password: Joi.string().min(6).required(),
     });
     const { error } = loginSchema.validate(user);
-    if (error && error.details[0].type === 'any.required') {
-      throw new CustomError(StatusCodes.BAD_REQUEST, 'All fields must be filled');
-    }
-    if (error && error.details[0].type !== 'any.required') {
-      throw new CustomError(StatusCodes.BAD_REQUEST, 'Incorrect email or password');
-    }
+    if (error) throw new CustomError(StatusCodes.BAD_REQUEST, 'All fields must be filled');
   }
 
   static generateToken(user: IUser) {
