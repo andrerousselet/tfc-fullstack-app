@@ -26,7 +26,12 @@ export default class UserService {
       password: Joi.string().min(6).required(),
     });
     const { error } = loginSchema.validate(user);
-    if (error) throw new CustomError(StatusCodes.BAD_REQUEST, 'All fields must be filled');
+    if (error && error.details[0].type === 'any.required') {
+      throw new CustomError(StatusCodes.BAD_REQUEST, 'All fields must be filled');
+    }
+    if (error && error.details[0].type !== 'any.required') {
+      throw new CustomError(StatusCodes.BAD_REQUEST, 'Incorrect email or password');
+    }
   }
 
   static generateToken(user: IUser) {
