@@ -15,4 +15,14 @@ export default class UserController {
       next(error);
     }
   };
+
+  validateToken: RequestHandler = async (req, res, next) => {
+    try {
+      const { authorization: token } = req.headers;
+      const role = await this.userService.validateToken(token);
+      return res.status(StatusCodes.OK).json({ role });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
