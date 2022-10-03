@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 import * as jwt from 'jsonwebtoken';
 import { compareSync } from 'bcryptjs';
 import UserModel from '../models/UserModel';
-import { ILogin, IUser } from '../interfaces/IUser';
+import { IJwtUser, ILogin, IUser } from '../interfaces/IUser';
 import CustomError from '../CustomError';
 import StatusCodes from '../StatusCodes';
 
@@ -32,5 +32,12 @@ export default class UserService {
   static generateToken(user: IUser) {
     const token = jwt.sign({ data: user }, process.env.JWT_SECRET as string);
     return token;
+  }
+
+  async validateToken(token: string | undefined) {
+    if (!token) throw new CustomError(StatusCodes.UNAUTHORIZED, 'Token not found');
+    const { data } = jwt.verify(token, process.env.JWT_SECRET as string) as IJwtUser;
+    const foundUser = await this.userModel.findUser(data.email);
+    return foundUser?.role;
   }
 }
