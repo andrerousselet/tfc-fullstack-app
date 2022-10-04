@@ -136,7 +136,7 @@ describe('POST - /login endpoint', () => {
   });
 });
 
-describe.only('GET - /login/validate endpoint', () => {
+describe('GET - /login/validate endpoint', () => {
   describe('when trying to validate the correct credentials without token, the response', () => {
 
     before(async () => {
