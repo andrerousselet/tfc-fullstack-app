@@ -135,3 +135,60 @@ describe('POST - /login endpoint', () => {
     });
   });
 });
+
+describe.only('GET - /login/validate endpoint', () => {
+  describe('when trying to validate the correct credentials without token, the response', () => {
+
+    before(async () => {
+      sinon.stub(User, "findOne").resolves(fakeUsers[0] as User);
+    });
+
+    after(()=>{
+      (User.findOne as sinon.SinonStub).restore();
+    })
+
+    it('should return status code 401 and the message "Token not found"', async () => {
+      const response = await chai
+        .request(app)
+        .get('/login/validate');
+
+      expect(response.status).to.equal(401);
+      expect(response.body.message).to.equal('Token not found');
+    });
+  });
+
+  describe('when trying to validate the correct credentials with invalid token, the response', () => {
+    it('should return status code 401 and the message "Invalid token"', async () => {
+      const response = await chai
+        .request(app)
+        .get('/login/validate')
+        .set('Authorization', 'invalid_token');
+
+      expect(response.status).to.equal(401);
+      expect(response.body.message).to.equal('Invalid token');
+    });
+  });
+
+  describe('when trying to validate the correct credentials with valid token, the response', () => {
+
+    before(async () => {
+      sinon.stub(User, "findOne").resolves(fakeUsers[0] as User);
+      sinon.stub(jwt, 'verify').returns({ data: fakeUsers[0] } as any);
+    });
+
+    after(()=>{
+      (User.findOne as sinon.SinonStub).restore();
+      (jwt.verify as sinon.SinonStub).restore();
+    })
+
+    it('should return status code 200 and the correct user role', async () => {
+      const response = await chai
+        .request(app)
+        .get('/login/validate')
+        .set('Authorization', 'some_valid_token');
+
+      expect(response.status).to.equal(200);
+      expect(response.body.role).to.equal('admin');
+    });
+  });
+});
