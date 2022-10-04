@@ -1,6 +1,7 @@
 import * as express from 'express';
 import handleError from './middlewares/handleError';
 import login from './routes/login.routes';
+import teams from './routes/teams.routes';
 
 class App {
   public app: express.Express;
@@ -25,6 +26,7 @@ class App {
     this.app.use(express.json());
     this.app.use(accessControl);
     this.app.use(login);
+    this.app.use(teams);
     this.app.use(handleError);
   }
 
