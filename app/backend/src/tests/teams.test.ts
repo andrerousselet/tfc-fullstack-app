@@ -46,3 +46,42 @@ describe('GET - /teams endpoint', () => {
     });
   });
 });
+
+describe('GET - /teams/:id endpoint', () => {
+  describe('When trying to get a team by id, in case of success,', () => {
+    const id = 1;
+    
+    before(async () => {
+      sinon.stub(Team, "findByPk").resolves(fakeTeams[id - 1] as Team);
+    });
+
+    after(()=>{
+      (Team.findByPk as sinon.SinonStub).restore();
+    })
+    
+    it('should return status code 200 and the selected team', async () => {
+      const response = await chai.request(app).get(`/teams/${id}`);
+      expect(response.status).to.equal(200);
+      expect(response.body).to.be.an('object').that.has.all.keys('id', 'teamName');
+      expect(response.body.id).to.equal(id);
+    });
+  });
+
+  describe('When trying to get a team by id, in case the team doesn`t exist,', () => {
+    const id = 999;
+    
+    before(async () => {
+      sinon.stub(Team, "findByPk").resolves();
+    });
+
+    after(()=>{
+      (Team.findByPk as sinon.SinonStub).restore();
+    })
+    
+    it('should return status code 404 and the message "Team doesn`t exist"', async () => {
+      const response = await chai.request(app).get(`/teams/${id}`);
+      expect(response.status).to.equal(404);
+      expect(response.body.message).to.equal('Team doesn`t exist');
+    });
+  });
+})
