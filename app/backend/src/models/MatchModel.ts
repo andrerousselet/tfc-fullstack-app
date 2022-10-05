@@ -15,8 +15,20 @@ export default class MatchModel {
     return matches;
   }
 
+  async findById(id: number): Promise<IMatch | null> {
+    const match = await this.model.findByPk(id);
+    return match;
+  }
+
   async create(match: IMatch): Promise<IMatch> {
     const createdMatch = await this.model.create(match);
     return createdMatch;
+  }
+
+  async finishMatch(id: number): Promise<void> {
+    await this.model.update(
+      { inProgress: false },
+      { where: { id } },
+    );
   }
 }
