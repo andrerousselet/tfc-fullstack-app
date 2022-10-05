@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import StatusCodes from '../StatusCodes';
+import StatusCodes from '../helpers/StatusCodes';
 import { ILogin } from '../interfaces/IUser';
 import UserService from '../services/UserService';
 

@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import StatusCodes from '../StatusCodes';
+import StatusCodes from '../helpers/StatusCodes';
 import TeamService from '../services/TeamService';
 
 export default class TeamController {

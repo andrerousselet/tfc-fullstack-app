@@ -1,7 +1,7 @@
 import { ErrorRequestHandler } from 'express';
 import { JsonWebTokenError } from 'jsonwebtoken';
-import CustomError from '../CustomError';
-import StatusCodes from '../StatusCodes';
+import CustomError from '../helpers/CustomError';
+import StatusCodes from '../helpers/StatusCodes';
 
 const handleError: ErrorRequestHandler = (error, _req, res, _next) => {
   console.log(error);

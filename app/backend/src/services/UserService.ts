@@ -3,8 +3,8 @@ import * as jwt from 'jsonwebtoken';
 import { compareSync } from 'bcryptjs';
 import UserModel from '../models/UserModel';
 import { IJwtUser, ILogin, IUser } from '../interfaces/IUser';
-import CustomError from '../CustomError';
-import StatusCodes from '../StatusCodes';
+import CustomError from '../helpers/CustomError';
+import StatusCodes from '../helpers/StatusCodes';
 
 export default class UserService {
   constructor(private userModel = new UserModel()) {}

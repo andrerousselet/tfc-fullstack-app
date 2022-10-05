@@ -1,5 +1,5 @@
-import StatusCodes from '../StatusCodes';
-import CustomError from '../CustomError';
+import StatusCodes from '../helpers/StatusCodes';
+import CustomError from '../helpers/CustomError';
 import TeamModel from '../models/TeamModel';
 
 export default class TeamService {
