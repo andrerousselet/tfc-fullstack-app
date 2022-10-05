@@ -1,13 +1,15 @@
 import { RequestHandler } from 'express';
+import InProgress from '../types/InProgress';
 import StatusCodes from '../helpers/StatusCodes';
 import MatchService from '../services/MatchService';
 
 export default class MatchController {
-  constructor(private matchController = new MatchService()) {}
+  constructor(private matchService = new MatchService()) {}
 
-  findAll: RequestHandler = async (_req, res, next) => {
+  findAll: RequestHandler = async (req, res, next) => {
     try {
-      const matches = await this.matchController.findAll();
+      const { inProgress } = req.query;
+      const matches = await this.matchService.findAll(inProgress as InProgress);
       return res.status(StatusCodes.OK).json(matches);
     } catch (error) {
       next(error);
