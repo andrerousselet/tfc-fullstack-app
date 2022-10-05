@@ -13,7 +13,7 @@ export default class TeamService {
   async findById(id: number) {
     const team = await this.teamModel.findById(id);
     if (!team) {
-      throw new CustomError(StatusCodes.NOT_FOUND, 'Team doesn`t exist');
+      throw new CustomError(StatusCodes.NOT_FOUND, 'There is no team with such id!');
     }
     return team;
   }
