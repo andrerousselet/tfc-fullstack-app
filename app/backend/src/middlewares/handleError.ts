@@ -9,7 +9,7 @@ const handleError: ErrorRequestHandler = (error, _req, res, _next) => {
     case error instanceof CustomError:
       return res.status(error.statusCode).json({ message: error.message });
     case error instanceof JsonWebTokenError:
-      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Invalid token' });
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Token must be a valid token' });
     default:
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: 'Something went wrong...' });
