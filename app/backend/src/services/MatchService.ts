@@ -3,9 +3,13 @@ import MatchModel from '../models/MatchModel';
 import { IMatch } from '../interfaces/IMatch';
 import CustomError from '../helpers/CustomError';
 import StatusCodes from '../helpers/StatusCodes';
+import TeamService from './TeamService';
 
 export default class MatchService {
-  constructor(private matchModel = new MatchModel()) {}
+  constructor(
+    private matchModel = new MatchModel(),
+    private teamService = new TeamService(),
+  ) {}
 
   async findAll(inProgress: InProgress) {
     const matches = await this.matchModel.findAll();
@@ -17,6 +21,14 @@ export default class MatchService {
   }
 
   async create(match: IMatch) {
+    const homeTeam = await this.teamService.findById(match.homeTeam);
+    const awayTeam = await this.teamService.findById(match.awayTeam);
+    if (homeTeam.id === awayTeam.id) {
+      throw new CustomError(
+        StatusCodes.UNAUTHORIZED,
+        'It is not possible to create a match with two equal teams',
+      );
+    }
     const createdMatch = await this.matchModel.create(match);
     return createdMatch;
   }
