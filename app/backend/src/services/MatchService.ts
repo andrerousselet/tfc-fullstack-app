@@ -1,5 +1,6 @@
 import InProgress from '../types/InProgress';
 import MatchModel from '../models/MatchModel';
+import { IMatch } from '../interfaces/IMatch';
 
 export default class MatchService {
   constructor(private matchModel = new MatchModel()) {}
@@ -11,5 +12,10 @@ export default class MatchService {
       return matchesByProgress;
     }
     return matches;
+  }
+
+  async create(match: IMatch) {
+    const createdMatch = await this.matchModel.create(match);
+    return createdMatch;
   }
 }
