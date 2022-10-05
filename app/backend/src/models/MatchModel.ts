@@ -14,4 +14,9 @@ export default class MatchModel {
     });
     return matches;
   }
+
+  async create(match: IMatch): Promise<IMatch> {
+    const createdMatch = await this.model.create(match);
+    return createdMatch;
+  }
 }
