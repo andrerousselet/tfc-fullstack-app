@@ -13,4 +13,14 @@ export default class TeamController {
       next(error);
     }
   };
+
+  findById: RequestHandler = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const team = await this.teamController.findById(Number(id));
+      return res.status(StatusCodes.OK).json(team);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
