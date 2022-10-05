@@ -8,5 +8,9 @@ const router = Router();
 
 router.get('/matches', (req, res, next) => matchController.findAll(req, res, next));
 router.post('/matches', auth, (req, res, next) => matchController.create(req, res, next));
+router.patch(
+  '/matches/:id/finish',
+  (req, res, next) => matchController.finishMatch(req, res, next),
+);
 
 export default router;
