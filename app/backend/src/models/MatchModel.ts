@@ -1,4 +1,4 @@
-import { IMatch } from '../interfaces/IMatch';
+import { IMatch, IUpdateScores } from '../interfaces/IMatch';
 import Match from '../database/models/Match';
 import Team from '../database/models/Team';
 
@@ -30,5 +30,13 @@ export default class MatchModel {
       { inProgress: false },
       { where: { id } },
     );
+  }
+
+  async updateScores({ id, homeTeamGoals, awayTeamGoals }: IUpdateScores): Promise<IMatch | null> {
+    await this.model.update(
+      { homeTeamGoals, awayTeamGoals },
+      { where: { id, inProgress: true } },
+    );
+    return this.findById(id as number);
   }
 }
