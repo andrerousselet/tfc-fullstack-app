@@ -12,5 +12,6 @@ router.patch(
   '/matches/:id/finish',
   (req, res, next) => matchController.finishMatch(req, res, next),
 );
+router.patch('/matches/:id', (req, res, next) => matchController.updateScores(req, res, next));
 
 export default router;
