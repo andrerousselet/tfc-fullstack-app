@@ -23,6 +23,15 @@ export default class LeaderboardService {
     return InfoStatsService.createLeaderboard(teams, matchStats);
   }
 
+  async table() {
+    const finishedMatches = await this.matchService.findAll('false');
+    const teams = await this.teamModel.findAll();
+    const homeMatchStats = LeaderboardService.homeTeamMatchStats(finishedMatches);
+    const awayMatchStats = LeaderboardService.awayTeamMatchStats(finishedMatches);
+    const matchStats = [...homeMatchStats, ...awayMatchStats];
+    return InfoStatsService.createLeaderboard(teams, matchStats);
+  }
+
   static homeTeamMatchStats(finishedMatches: IMatch[]) {
     return finishedMatches.map((match) => {
       let points = 0;

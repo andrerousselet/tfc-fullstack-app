@@ -22,4 +22,13 @@ export default class LeaderboardController {
       next(error);
     }
   };
+
+  table: RequestHandler = async (_req, res, next) => {
+    try {
+      const awayTable = await this.leaderboardService.table();
+      return res.status(StatusCodes.OK).json(awayTable);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
