@@ -1,5 +1,3 @@
-// import { ITeam } from '../interfaces/ITeam';
-// import { ILeaderboard } from '../interfaces/ILeaderBoard';
 import TeamModel from '../models/TeamModel';
 import { IMatch, IMatchStats } from '../interfaces/IMatch';
 import MatchService from './MatchService';
@@ -15,6 +13,13 @@ export default class LeaderboardService {
     const finishedMatches = await this.matchService.findAll('false');
     const teams = await this.teamModel.findAll();
     const matchStats = LeaderboardService.homeTeamMatchStats(finishedMatches);
+    return InfoStatsService.createLeaderboard(teams, matchStats);
+  }
+
+  async awayTable() {
+    const finishedMatches = await this.matchService.findAll('false');
+    const teams = await this.teamModel.findAll();
+    const matchStats = LeaderboardService.awayTeamMatchStats(finishedMatches);
     return InfoStatsService.createLeaderboard(teams, matchStats);
   }
 
@@ -34,6 +39,26 @@ export default class LeaderboardService {
         totalDraws: draw ? 1 : 0,
         goalsFavor: match.homeTeamGoals,
         goalsOwn: match.awayTeamGoals,
+      } as IMatchStats;
+    });
+  }
+
+  static awayTeamMatchStats(finishedMatches: IMatch[]) {
+    return finishedMatches.map((match) => {
+      let points = 0;
+      const victory = match.awayTeamGoals > match.homeTeamGoals;
+      const loss = match.awayTeamGoals < match.homeTeamGoals;
+      const draw = match.awayTeamGoals === match.homeTeamGoals;
+      if (victory) points = 3;
+      if (draw) points = 1;
+      return {
+        name: match.teamAway?.teamName as string,
+        totalPoints: points,
+        totalVictories: victory ? 1 : 0,
+        totalLosses: loss ? 1 : 0,
+        totalDraws: draw ? 1 : 0,
+        goalsFavor: match.awayTeamGoals,
+        goalsOwn: match.homeTeamGoals,
       } as IMatchStats;
     });
   }
