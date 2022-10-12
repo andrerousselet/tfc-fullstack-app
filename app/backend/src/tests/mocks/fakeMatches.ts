@@ -72,3 +72,11 @@ export const fakeMatches: IMatch[] = [
     }
   },
 ]
+
+export const fakeMatchCreate = {
+  homeTeam: 16,
+  awayTeam: 8,
+  homeTeamGoals: 2,
+  awayTeamGoals: 2,
+  inProgress: true
+}
