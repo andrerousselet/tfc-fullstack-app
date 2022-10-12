@@ -1,4 +1,6 @@
-export const fakeMatches = [
+import { IMatch } from "../../interfaces/IMatch";
+
+export const fakeMatches: IMatch[] = [
   {
     id: 1,
     homeTeam: 16,
