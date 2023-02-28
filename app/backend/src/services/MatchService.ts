@@ -9,7 +9,7 @@ export default class MatchService {
   constructor(
     private matchModel = new MatchModel(),
     private teamService = new TeamService(),
-  ) {}
+  ) { }
 
   async findAll(inProgress: InProgress) {
     const matches = await this.matchModel.findAll();

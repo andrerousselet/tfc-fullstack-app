@@ -3,7 +3,7 @@ import Match from '../database/models/Match';
 import Team from '../database/models/Team';
 
 export default class MatchModel {
-  constructor(private model: typeof Match = Match) {}
+  constructor(private model: typeof Match = Match) { }
 
   async findAll(): Promise<IMatch[]> {
     const matches = await this.model.findAll({

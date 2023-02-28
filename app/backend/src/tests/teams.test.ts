@@ -18,7 +18,7 @@ describe('GET - /teams endpoint', () => {
       sinon.stub(Team, "findAll").resolves(fakeTeams as Team[]);
     });
 
-    after(()=>{
+    after(() => {
       (Team.findAll as sinon.SinonStub).restore();
     })
 
@@ -35,7 +35,7 @@ describe('GET - /teams endpoint', () => {
       sinon.stub(Team, "findAll").rejects();
     });
 
-    after(()=>{
+    after(() => {
       (Team.findAll as sinon.SinonStub).restore();
     })
 
@@ -50,15 +50,15 @@ describe('GET - /teams endpoint', () => {
 describe('GET - /teams/:id endpoint', () => {
   describe('When trying to get a team by id, in case of success,', () => {
     const id = 1;
-    
+
     before(async () => {
       sinon.stub(Team, "findByPk").resolves(fakeTeams[id - 1] as Team);
     });
 
-    after(()=>{
+    after(() => {
       (Team.findByPk as sinon.SinonStub).restore();
     })
-    
+
     it('should return status code 200 and the selected team', async () => {
       const response = await chai.request(app).get(`/teams/${id}`);
       expect(response.status).to.equal(200);
@@ -69,15 +69,15 @@ describe('GET - /teams/:id endpoint', () => {
 
   describe('When trying to get a team by id, in case the team doesn`t exist,', () => {
     const id = 999;
-    
+
     before(async () => {
       sinon.stub(Team, "findByPk").resolves();
     });
 
-    after(()=>{
+    after(() => {
       (Team.findByPk as sinon.SinonStub).restore();
     })
-    
+
     it('should return status code 404 and the message "Team doesn`t exist"', async () => {
       const response = await chai.request(app).get(`/teams/${id}`);
       expect(response.status).to.equal(404);

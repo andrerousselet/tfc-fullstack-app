@@ -21,7 +21,7 @@ describe('POST - /login endpoint', () => {
       sinon.stub(User, "findOne").resolves(fakeUsers[0] as User);
     });
 
-    after(()=>{
+    after(() => {
       (User.findOne as sinon.SinonStub).restore();
     })
 
@@ -30,9 +30,9 @@ describe('POST - /login endpoint', () => {
         .request(app)
         .post('/login')
         .send({
-            email: 'admin@admin.com',
-            password: 'secret_admin'
-          });
+          email: 'admin@admin.com',
+          password: 'secret_admin'
+        });
 
       expect(response.status).to.equal(200);
       expect(response.body).to.have.property('token');
@@ -45,7 +45,7 @@ describe('POST - /login endpoint', () => {
       sinon.stub(User, "findOne").resolves();
     });
 
-    after(()=>{
+    after(() => {
       (User.findOne as sinon.SinonStub).restore();
     })
 
@@ -54,9 +54,9 @@ describe('POST - /login endpoint', () => {
         .request(app)
         .post('/login')
         .send({
-            email: 'invalid@email',
-            password: 'secret_admin'
-          });
+          email: 'invalid@email',
+          password: 'secret_admin'
+        });
 
       expect(response.status).to.equal(400);
       expect(response.body.message).to.equal('All fields must be filled');
@@ -69,7 +69,7 @@ describe('POST - /login endpoint', () => {
       sinon.stub(User, "findOne").resolves();
     });
 
-    after(()=>{
+    after(() => {
       (User.findOne as sinon.SinonStub).restore();
     })
 
@@ -78,9 +78,9 @@ describe('POST - /login endpoint', () => {
         .request(app)
         .post('/login')
         .send({
-            email: 'email@email.com',
-            password: '123'
-          });
+          email: 'email@email.com',
+          password: '123'
+        });
 
       expect(response.status).to.equal(400);
       expect(response.body.message).to.equal('All fields must be filled');
@@ -93,7 +93,7 @@ describe('POST - /login endpoint', () => {
       sinon.stub(User, "findOne").resolves();
     });
 
-    after(()=>{
+    after(() => {
       (User.findOne as sinon.SinonStub).restore();
     })
 
@@ -102,9 +102,9 @@ describe('POST - /login endpoint', () => {
         .request(app)
         .post('/login')
         .send({
-            email: 'email@email.com',
-            password: 'secret_admin'
-          });
+          email: 'email@email.com',
+          password: 'secret_admin'
+        });
 
       expect(response.status).to.equal(401);
       expect(response.body.message).to.equal('Incorrect email or password');
@@ -117,7 +117,7 @@ describe('POST - /login endpoint', () => {
       sinon.stub(User, "findOne").resolves();
     });
 
-    after(()=>{
+    after(() => {
       (User.findOne as sinon.SinonStub).restore();
     })
 
@@ -126,9 +126,9 @@ describe('POST - /login endpoint', () => {
         .request(app)
         .post('/login')
         .send({
-            email: 'user@user.com',
-            password: 'secretuser'
-          });
+          email: 'user@user.com',
+          password: 'secretuser'
+        });
 
       expect(response.status).to.equal(401);
       expect(response.body.message).to.equal('Incorrect email or password');
@@ -143,7 +143,7 @@ describe('GET - /login/validate endpoint', () => {
       sinon.stub(User, "findOne").resolves(fakeUsers[0] as User);
     });
 
-    after(()=>{
+    after(() => {
       (User.findOne as sinon.SinonStub).restore();
     })
 
@@ -176,7 +176,7 @@ describe('GET - /login/validate endpoint', () => {
       sinon.stub(jwt, 'verify').returns({ data: fakeUsers[0] } as any);
     });
 
-    after(()=>{
+    after(() => {
       (User.findOne as sinon.SinonStub).restore();
       (jwt.verify as sinon.SinonStub).restore();
     })

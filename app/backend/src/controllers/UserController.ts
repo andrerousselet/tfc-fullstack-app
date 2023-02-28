@@ -4,7 +4,7 @@ import { ILogin } from '../interfaces/IUser';
 import UserService from '../services/UserService';
 
 export default class UserController {
-  constructor(private userService = new UserService()) {}
+  constructor(private userService = new UserService()) { }
 
   login: RequestHandler = async (req, res, next) => {
     try {

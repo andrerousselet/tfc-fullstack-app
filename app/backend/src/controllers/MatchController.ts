@@ -5,7 +5,7 @@ import StatusCodes from '../helpers/StatusCodes';
 import MatchService from '../services/MatchService';
 
 export default class MatchController {
-  constructor(private matchService = new MatchService()) {}
+  constructor(private matchService = new MatchService()) { }
 
   findAll: RequestHandler = async (req, res, next) => {
     try {

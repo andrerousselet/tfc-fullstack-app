@@ -20,7 +20,7 @@ describe('GET - /matches endpoint', () => {
       sinon.stub(Match, "findAll").resolves(fakeMatches as Match[]);
     });
 
-    after(()=>{
+    after(() => {
       (Match.findAll as sinon.SinonStub).restore();
     })
 
@@ -37,7 +37,7 @@ describe('GET - /matches endpoint', () => {
       sinon.stub(Match, "findAll").rejects();
     });
 
-    after(()=>{
+    after(() => {
       (Match.findAll as sinon.SinonStub).restore();
     })
 
@@ -52,12 +52,12 @@ describe('GET - /matches endpoint', () => {
 
     before(async () => {
       sinon.stub(Match, "findAll").resolves([
-        {...fakeMatches[0], inProgress: true}, 
-        {...fakeMatches[1], inProgress: true},
+        { ...fakeMatches[0], inProgress: true },
+        { ...fakeMatches[1], inProgress: true },
       ] as Match[]);
     });
 
-    after(()=>{
+    after(() => {
       (Match.findAll as sinon.SinonStub).restore();
     })
 
@@ -76,22 +76,22 @@ describe('POST - /matches endpoint', () => {
     const id = 1;
 
     before(async () => {
-      sinon.stub(Match, "create").resolves({id, ...fakeMatchCreate} as Match);
+      sinon.stub(Match, "create").resolves({ id, ...fakeMatchCreate } as Match);
       sinon.stub(jwt, 'verify').returns({ data: fakeUsers[0] } as any);
     });
 
-    after(()=>{
+    after(() => {
       (Match.create as sinon.SinonStub).restore();
       (jwt.verify as sinon.SinonStub).restore();
     })
-    
+
     it('should return status code 201 and the created match info', async () => {
       const response = await chai.request(app)
         .post(`/matches`)
         .set('Authorization', 'some_valid_token')
         .send(fakeMatchCreate);
       expect(response.status).to.equal(201);
-      expect(response.body).to.deep.equal({id: 1, ...fakeMatchCreate});
+      expect(response.body).to.deep.equal({ id: 1, ...fakeMatchCreate });
     });
   });
 
@@ -101,16 +101,16 @@ describe('POST - /matches endpoint', () => {
       sinon.stub(jwt, 'verify').returns({ data: fakeUsers[0] } as any);
     });
 
-    after(()=>{
+    after(() => {
       (Match.create as sinon.SinonStub).restore();
       (jwt.verify as sinon.SinonStub).restore();
     })
-    
+
     it('should return status code 401 and the message "It is not possible to create a match with two equal teams"', async () => {
       const response = await chai.request(app)
         .post(`/matches`)
         .set('Authorization', 'some_valid_token')
-        .send({...fakeMatchCreate, homeTeam: 16, awayTeam: 16});
+        .send({ ...fakeMatchCreate, homeTeam: 16, awayTeam: 16 });
       expect(response.status).to.equal(401);
       expect(response.body.message).to.equal('It is not possible to create a match with two equal teams');
     });
