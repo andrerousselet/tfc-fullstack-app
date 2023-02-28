@@ -1,10 +1,14 @@
-# :construction: README em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto.
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+# TFC Fullstack App
+
+A fullstack app that simulates football matches in a hypothetical brazilian championship.
+
+  - Built with Node, Express, Sequelize, Typescript, React and Docker. 
+  - 80%+ test coverage with Mocha, ChaiHTTP, and Sinon
+  - Model, Service, Controller and OOP architecture
+  
+To run locally with Docker, clone the repository and run the following command:
+<br>
+
+```
+$ docker-compose up -d
+```
