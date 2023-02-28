@@ -7,29 +7,39 @@ export default class LeaderboardService {
   constructor(
     private matchService = new MatchService(),
     private teamModel = new TeamModel(),
-  ) {}
+  ) { }
 
-  async homeTable() {
+  private async getTeamsAndMatches() {
     const finishedMatches = await this.matchService.findAll('false');
     const teams = await this.teamModel.findAll();
-    const matchStats = LeaderboardService.homeTeamMatchStats(finishedMatches);
-    return InfoStatsService.createLeaderboard(teams, matchStats);
+    return { finishedMatches, teams };
+  }
+
+  static async getMatchStats(finishedMatches: IMatch[]) {
+    const homeMatchStats = LeaderboardService.homeTeamMatchStats(finishedMatches);
+    const awayMatchStats = LeaderboardService.awayTeamMatchStats(finishedMatches);
+    return { homeMatchStats, awayMatchStats };
+  }
+
+  async homeTable() {
+    const { finishedMatches, teams } = await this.getTeamsAndMatches();
+    const { homeMatchStats } = await LeaderboardService.getMatchStats(finishedMatches);
+    return InfoStatsService.createLeaderboard(teams, homeMatchStats);
   }
 
   async awayTable() {
-    const finishedMatches = await this.matchService.findAll('false');
-    const teams = await this.teamModel.findAll();
-    const matchStats = LeaderboardService.awayTeamMatchStats(finishedMatches);
-    return InfoStatsService.createLeaderboard(teams, matchStats);
+    const { finishedMatches, teams } = await this.getTeamsAndMatches();
+    const { awayMatchStats } = await LeaderboardService.getMatchStats(finishedMatches);
+    return InfoStatsService.createLeaderboard(teams, awayMatchStats);
   }
 
   async table() {
-    const finishedMatches = await this.matchService.findAll('false');
-    const teams = await this.teamModel.findAll();
-    const homeMatchStats = LeaderboardService.homeTeamMatchStats(finishedMatches);
-    const awayMatchStats = LeaderboardService.awayTeamMatchStats(finishedMatches);
-    const matchStats = [...homeMatchStats, ...awayMatchStats];
-    return InfoStatsService.createLeaderboard(teams, matchStats);
+    const { finishedMatches, teams } = await this.getTeamsAndMatches();
+    const {
+      homeMatchStats,
+      awayMatchStats } = await LeaderboardService.getMatchStats(finishedMatches);
+    const allMatchStats = [...homeMatchStats, ...awayMatchStats];
+    return InfoStatsService.createLeaderboard(teams, allMatchStats);
   }
 
   static homeTeamMatchStats(finishedMatches: IMatch[]) {
